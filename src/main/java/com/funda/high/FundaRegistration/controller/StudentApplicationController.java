@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.funda.high.FundaRegistration.model.StudentApplication;
+
+import com.funda.high.FundaRegistration.dto.UserRegistrationDTO;
+
 
 
 @RestController
@@ -24,11 +26,13 @@ public class StudentApplicationController {
 	
 
 	@PostMapping("student/application")
-	public void sendStudentApplicationData(@Valid @RequestBody StudentApplication studentApplicationDTO ) {
+	public UserRegistrationDTO sendStudentApplicationData(@Valid @RequestBody UserRegistrationDTO userRegistrationDTO ) {
 		
-		jmsTemplate.convertAndSend("STUDENT_APPLICATION_QUEUE", studentApplicationDTO);
+		jmsTemplate.convertAndSend("STUDENT_APPLICATION_QUEUE", userRegistrationDTO);
 		
-		System.out.println("Application data sent ======================" + studentApplicationDTO + "=======================================" );
+		System.out.println("Application data sent ======================" + userRegistrationDTO + "=======================================" );
+	
+		return userRegistrationDTO;
 	}
 	
 	
