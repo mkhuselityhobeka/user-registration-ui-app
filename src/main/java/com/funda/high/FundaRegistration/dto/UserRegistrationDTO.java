@@ -1,15 +1,11 @@
 package com.funda.high.FundaRegistration.dto;
 
-import javax.validation.constraints.Max;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import org.springframework.stereotype.Component;
-
 import com.funda.high.FundaRegistration.validatorInterface.ValidEmail;
 import com.funda.high.FundaRegistration.validatorInterface.ValidPassword;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -46,6 +42,8 @@ public class UserRegistrationDTO {
 	@NotNull
 	@ValidEmail(message = "invalid email")
 	private String username;
+	
+	private boolean enabled;
 
 
 
