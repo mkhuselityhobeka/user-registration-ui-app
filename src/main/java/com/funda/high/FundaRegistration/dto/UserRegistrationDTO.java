@@ -1,6 +1,7 @@
 package com.funda.high.FundaRegistration.dto;
 
-
+import java.util.ArrayList;
+import java.util.Collection;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import org.springframework.stereotype.Component;
@@ -11,29 +12,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-
-
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Component
 public class UserRegistrationDTO {
 
 	
 	private int id;
-	
-
 	@NotBlank(message = "name cannot be empty")
 	@NotNull
-	private String sName;
-	
+	private String sname;
 	@NotBlank(message = "password cannot be empty")
 	@NotNull
 	@ValidPassword
 	private String password;
-	
 	@NotBlank(message = "slastName cannot be emty")
 	@NotNull
 	private String slastName;
@@ -45,11 +38,6 @@ public class UserRegistrationDTO {
 	
 	private boolean enabled;
 
+	private Collection<RolesDTO> roles = new ArrayList<RolesDTO>();
 
-
-	
-	
-	
-
-	
 }
