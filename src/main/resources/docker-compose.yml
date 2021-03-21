@@ -1,0 +1,35 @@
+version: '2'
+services:
+  funda-ui-activemq:
+    image: webcenter/activemq:latest
+    container_name: funda-ui-activemq
+    ports:
+      - 61616:61616
+      - 8161:8161
+      - 61613:61613
+      - 61614:61614
+    environment:
+      - spring.activemq.user=admin
+      - spring.activemq.password=admin
+      - spring.activemq.broker-url=tcp://funda-ui-activemq:61616?jms.redeliveryPolicy.maximumRedeliveries=1
+    networks:
+     - funda-network
+  user-registration-app:
+    container_name: user-registration-app
+    build:
+      context: C:\Users\Sizwe\Downloads\DEVOPS TOOLS\FundaRegistration-ui\
+      dockerfile: Dockerfile
+    image: user-application-app
+    ports:
+    - 8091:8090
+    depends_on:
+      - funda-ui-activemq
+    environment:
+      - spring.activemq.user=admin
+      - spring.activemq.password=admin
+      - spring.activemq.broker-url=tcp://funda-ui-activemq:61616?jms.redeliveryPolicy.maximumRedeliveries=1
+    networks:
+      - funda-network
+networks:
+    funda-network:
+      driver: bridge
