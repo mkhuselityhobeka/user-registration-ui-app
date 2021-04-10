@@ -30,8 +30,8 @@ public class PasswordValid implements ConstraintValidator<ValidPassword, String>
 		if(result.isValid()) {
 			return true;
 		}
-				context.disableDefaultConstraintViolation();
-		        context.buildConstraintViolationWithTemplate(
+				 context.disableDefaultConstraintViolation();
+		         context.buildConstraintViolationWithTemplate(
 		          Joiner.on(",").join(validator.getMessages(result)))
 		          .addConstraintViolation();
 		       

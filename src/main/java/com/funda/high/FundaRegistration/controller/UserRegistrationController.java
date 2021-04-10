@@ -2,18 +2,13 @@ package com.funda.high.FundaRegistration.controller;
 
 
 import java.util.List;
-
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.funda.high.FundaRegistration.config.JmsConfig;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.funda.high.FundaRegistration.dto.UserRegistrationDTO;
 import com.funda.high.FundaRegistration.service.UserRegistrationServiceImpl;
 
@@ -24,8 +19,10 @@ import com.funda.high.FundaRegistration.service.UserRegistrationServiceImpl;
 @CrossOrigin(origins = "*")
 public class UserRegistrationController {
 	
-	@Autowired
 	UserRegistrationServiceImpl userRegistrationServiceImpl;
+	public UserRegistrationController(UserRegistrationServiceImpl userRegistrationServiceImpl){
+		   this.userRegistrationServiceImpl = userRegistrationServiceImpl;
+	}
 		
 	@PostMapping("user/registration")
 	public ResponseEntity<UserRegistrationDTO>sendMessage(@Valid @RequestBody UserRegistrationDTO userRegistrationDTO) {	
@@ -42,4 +39,26 @@ public class UserRegistrationController {
 	public ResponseEntity<List<Object>>returnUser(){
 		return new ResponseEntity<>(userRegistrationServiceImpl.getAllUsers(), HttpStatus.OK);
 	}
+
+	@RequestMapping(value = "/health")
+	public ResponseEntity health(){
+		HttpStatus httpStatus;
+		if (userRegistrationServiceImpl.isup ()){
+			httpStatus = HttpStatus.OK;
+		}else{
+			httpStatus = HttpStatus.BAD_REQUEST;
+		}
+		return new ResponseEntity (httpStatus);
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/metrics",  produces="text/plain")
+	public String matrics(){
+		int numberOfMessagesInUserReqQueue = userRegistrationServiceImpl.numberOfPendingJobs(JmsConfig.userRegQName);
+
+		return  "# HELP messages Number of messages in the queueService\n"
+				+ "# TYPE messages gauge\n"
+				+ "messages " + numberOfMessagesInUserReqQueue;
+	}
+
 }
