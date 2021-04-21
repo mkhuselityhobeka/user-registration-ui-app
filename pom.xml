@@ -18,7 +18,8 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<spring-cloud.version>Hoxton.RELEASE</spring-cloud.version>
-		<spring-boot-admin-client.vesrion>2.4.0</spring-boot-admin-client.vesrion>
+		<spring-boot-admin-client.vesrion>2.2.2</spring-boot-admin-client.vesrion>
+		<org.passay.version>1.0</org.passay.version>
 	</properties>
 
 	<dependencyManagement>
@@ -34,16 +35,12 @@
 	</dependencyManagement>
 	
 	<dependencies>
+		<!--spring-boot-starter dependencies-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-activemq</artifactId>
 		</dependency>
-		
-		<dependency>
-    		  <groupId>org.passay</groupId>
-     		 <artifactId>passay</artifactId>
-     	     <version>1.0</version>
- 	  </dependency>
+
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-tomcat</artifactId>  
@@ -57,6 +54,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-json</artifactId>
+		</dependency>
+		<!--dev tools-->
 	   <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -69,7 +72,13 @@
 		        <artifactId>lombok</artifactId>		       
 		        <scope>provided</scope>
    			 </dependency>
-		
+		<!--password validations-->
+		<dependency>
+			<groupId>org.passay</groupId>
+			<artifactId>passay</artifactId>
+			<version>${org.passay.version}</version>
+		</dependency>
+		<!--testing -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -81,12 +90,9 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-json</artifactId>
-		</dependency>
 
+
+		<!--jackson dependencies-->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
@@ -104,21 +110,29 @@
 	 	 <dependency>
 		      <groupId>org.springframework.cloud</groupId>
 		      <artifactId>spring-cloud-starter-openfeign</artifactId>
-    	</dependency>	
-    		<dependency>
-   			<groupId>io.springfox</groupId>
-  			 <artifactId>springfox-swagger2</artifactId>
-   			<version>2.7.0</version>
+    	</dependency>
+		<!--Swagger dependencies-->
+		<dependency>
+				<groupId>io.springfox</groupId>
+				 <artifactId>springfox-swagger2</artifactId>
+				<version>2.7.0</version>
 		</dependency>
 		<dependency>
    			<groupId>io.springfox</groupId>
    			<artifactId>springfox-swagger-ui</artifactId>
   			 <version>2.7.0</version>
 		</dependency>
+		<!--spring boot client registration to admin server-->
 		<dependency>
 			<groupId>de.codecentric</groupId>
 			<artifactId>spring-boot-admin-starter-client</artifactId>
 			<version>${spring-boot-admin-client.vesrion}</version>
+		</dependency>
+
+		<!--security-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 	</dependencies>
 

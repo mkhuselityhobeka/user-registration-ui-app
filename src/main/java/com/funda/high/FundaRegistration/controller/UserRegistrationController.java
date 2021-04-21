@@ -3,9 +3,7 @@ package com.funda.high.FundaRegistration.controller;
 
 import java.util.List;
 import javax.validation.Valid;
-
 import com.funda.high.FundaRegistration.config.JmsConfig;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,14 +39,14 @@ public class UserRegistrationController {
 	}
 
 	@RequestMapping(value = "/health")
-	public ResponseEntity health(){
+	public ResponseEntity<HttpStatus> health(){
 		HttpStatus httpStatus;
 		if (userRegistrationServiceImpl.isup ()){
 			httpStatus = HttpStatus.OK;
 		}else{
 			httpStatus = HttpStatus.BAD_REQUEST;
 		}
-		return new ResponseEntity (httpStatus);
+		return new ResponseEntity<>(httpStatus);
 	}
 
 	@ResponseBody

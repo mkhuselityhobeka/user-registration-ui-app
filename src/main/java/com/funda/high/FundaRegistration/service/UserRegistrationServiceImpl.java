@@ -47,8 +47,9 @@ public class UserRegistrationServiceImpl implements UserRegistrationInterface, M
 
 
 	/*save user registration data to activemq*/
+	/*make method synchronized so it can be accessed by one thread at time*/
 	@Override
-	public UserRegistrationDTO enqueUserDetails(UserRegistrationDTO userRegistrationDTO){
+	public synchronized UserRegistrationDTO enqueUserDetails(UserRegistrationDTO userRegistrationDTO){
 
 		   log.debug ("sending message='{}' to destination='{}'",userRegistrationDTO,JmsConfig.userRegQName);
 		   if(userRegistrationDTO.getUsername().equalsIgnoreCase("mkhuselityhobeka@gmail.com")){
@@ -89,9 +90,9 @@ public class UserRegistrationServiceImpl implements UserRegistrationInterface, M
 		if(message instanceof ActiveMQTextMessage){
 			ActiveMQTextMessage activeMQTextMessage = (ActiveMQTextMessage) message;
 			try{
-				log.info ("Busy processing message " + activeMQTextMessage.getText());
+				log.debug ("Busy processing message " + activeMQTextMessage.getText());
 				Thread.sleep (5000);
-				log.info ("Completed  processing message " + activeMQTextMessage.getText());
+				log.debug ("Completed  processing message " + activeMQTextMessage.getText());
 			}catch (InterruptedException interruptedException){
 				interruptedException.printStackTrace ();
 

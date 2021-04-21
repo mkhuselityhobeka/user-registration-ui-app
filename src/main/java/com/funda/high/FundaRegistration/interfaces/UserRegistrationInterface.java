@@ -6,8 +6,8 @@ import com.funda.high.FundaRegistration.dto.UserRegistrationDTO;
 
 
 public interface UserRegistrationInterface {
-	
-	 UserRegistrationDTO enqueUserDetails(UserRegistrationDTO userRegistrationDTO);
+
+	UserRegistrationDTO enqueUserDetails(UserRegistrationDTO userRegistrationDTO);
 	 Object userLogin(UserRegistrationDTO registrationDTO);
 	 List<Object>getAllUsers();
 }
