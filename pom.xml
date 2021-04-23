@@ -20,6 +20,7 @@
 		<spring-cloud.version>Hoxton.RELEASE</spring-cloud.version>
 		<spring-boot-admin-client.vesrion>2.2.2</spring-boot-admin-client.vesrion>
 		<org.passay.version>1.0</org.passay.version>
+		<springdoc.springdoc-openapi-ui.version>1.5.2</springdoc.springdoc-openapi-ui.version>
 	</properties>
 
 	<dependencyManagement>
@@ -111,29 +112,25 @@
 		      <groupId>org.springframework.cloud</groupId>
 		      <artifactId>spring-cloud-starter-openfeign</artifactId>
     	</dependency>
-		<!--Swagger dependencies-->
+		<!--OpenAPI dependencies-->
 		<dependency>
-				<groupId>io.springfox</groupId>
-				 <artifactId>springfox-swagger2</artifactId>
-				<version>2.7.0</version>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>${springdoc.springdoc-openapi-ui.version}</version>
 		</dependency>
-		<dependency>
-   			<groupId>io.springfox</groupId>
-   			<artifactId>springfox-swagger-ui</artifactId>
-  			 <version>2.7.0</version>
-		</dependency>
+
 		<!--spring boot client registration to admin server-->
-		<dependency>
+		<!--<dependency>
 			<groupId>de.codecentric</groupId>
 			<artifactId>spring-boot-admin-starter-client</artifactId>
 			<version>${spring-boot-admin-client.vesrion}</version>
-		</dependency>
+		</dependency>-->
 
 		<!--security-->
-		<dependency>
+		<!--<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
+		</dependency>-->
 	</dependencies>
 
 	
@@ -142,6 +139,20 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>pre-integration-test</id>
+						<goals>
+							<goal>start</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>post-integration-test</id>
+						<goals>
+							<goal>stop</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

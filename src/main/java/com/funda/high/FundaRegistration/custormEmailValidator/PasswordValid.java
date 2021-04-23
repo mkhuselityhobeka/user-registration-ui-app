@@ -1,4 +1,4 @@
-package com.funda.high.FundaRegistration.custormemaivalidator;
+package com.funda.high.FundaRegistration.custormEmailValidator;
 
 import java.util.Arrays;
 import javax.validation.ConstraintValidator;

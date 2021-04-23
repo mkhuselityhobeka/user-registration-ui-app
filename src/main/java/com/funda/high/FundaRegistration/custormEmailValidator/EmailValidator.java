@@ -1,4 +1,4 @@
-package com.funda.high.FundaRegistration.custormemaivalidator;
+package com.funda.high.FundaRegistration.custormEmailValidator;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

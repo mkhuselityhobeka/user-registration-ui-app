@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import com.funda.high.FundaRegistration.config.JmsConfig;
+import lombok.extern.slf4j.XSlf4j;
 import org.apache.activemq.command.ActiveMQTextMessage;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.JmsException;
@@ -18,7 +19,6 @@ import com.funda.high.FundaRegistration.dto.RolesDTO;
 import com.funda.high.FundaRegistration.dto.UserRegistrationDTO;
 import com.funda.high.FundaRegistration.interfaces.UserRegistrationInterface;
 import lombok.extern.slf4j.Slf4j;
-
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -39,6 +39,7 @@ public class UserRegistrationServiceImpl implements UserRegistrationInterface, M
 	JmsTemplate jmsTemplate;
 	RestTemplate restTemplate;
 	int counter = 0;
+
 	public UserRegistrationServiceImpl (JmsTemplate jmsTemplate, RestTemplate restTemplate){
 		this.jmsTemplate = jmsTemplate;
 		this.restTemplate = restTemplate;
@@ -51,7 +52,7 @@ public class UserRegistrationServiceImpl implements UserRegistrationInterface, M
 	@Override
 	public synchronized UserRegistrationDTO enqueUserDetails(UserRegistrationDTO userRegistrationDTO){
 
-		   log.debug ("sending message='{}' to destination='{}'",userRegistrationDTO,JmsConfig.userRegQName);
+		   log.debug("sending message='{}' to destination='{}'",userRegistrationDTO,JmsConfig.userRegQName);
 		   if(userRegistrationDTO.getUsername().equalsIgnoreCase("mkhuselityhobeka@gmail.com")){
 			   roleDTO.setRoleAuthority("ROLE_ADMIN");
 		   }else {	   
@@ -73,6 +74,7 @@ public class UserRegistrationServiceImpl implements UserRegistrationInterface, M
 	public int numberOfProcessedMessages(){
 		return counter;
 	}
+
 	/*check activeMQ connection status*/
 	public boolean isup(){
 		ConnectionFactory connectionFactory = jmsTemplate.getConnectionFactory ();
@@ -84,6 +86,7 @@ public class UserRegistrationServiceImpl implements UserRegistrationInterface, M
 		}
 		return  false;
 	}
+
 	/*check the message sent*/
 	@Override
 	public void onMessage(Message message) {

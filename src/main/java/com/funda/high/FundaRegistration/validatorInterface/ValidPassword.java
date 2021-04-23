@@ -5,7 +5,7 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-import com.funda.high.FundaRegistration.custormemaivalidator.PasswordValid;
+import com.funda.high.FundaRegistration.custormEmailValidator.PasswordValid;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Documented;

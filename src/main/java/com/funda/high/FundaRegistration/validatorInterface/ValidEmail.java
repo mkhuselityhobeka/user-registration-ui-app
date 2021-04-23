@@ -6,7 +6,7 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-import com.funda.high.FundaRegistration.custormemaivalidator.EmailValidator;
+import com.funda.high.FundaRegistration.custormEmailValidator.EmailValidator;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.TYPE;
