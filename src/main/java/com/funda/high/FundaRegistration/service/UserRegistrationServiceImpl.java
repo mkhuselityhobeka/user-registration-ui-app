@@ -8,7 +8,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import com.funda.high.FundaRegistration.config.JmsConfig;
 import com.funda.high.FundaRegistration.exceptions.InvalidPasswordException;
 import org.apache.activemq.command.ActiveMQTextMessage;
@@ -42,53 +41,56 @@ public class UserRegistrationServiceImpl implements UserRegistrationInterface, M
 	JmsTemplate jmsTemplate;
 	RestTemplate restTemplate;
 	int counter = 0;
+	private String password;
 
 	public UserRegistrationServiceImpl (JmsTemplate jmsTemplate, RestTemplate restTemplate){
 		this.jmsTemplate = jmsTemplate;
 		this.restTemplate = restTemplate;
 	}
 
-
-
 	/*save user registration data to activemq*/
 	/*make method synchronized so it can be accessed by one thread at time*/
 	@Override
 	public synchronized UserRegistrationDTO enqueUserDetails(UserRegistrationDTO userRegistrationDTO) throws InvalidPasswordException {
 
-
-		   log.debug("sending message='{}' to destination='{}'",userRegistrationDTO,JmsConfig.userRegQName);
-
-
-		   if(userRegistrationDTO.getUsername().equalsIgnoreCase("mkhuselityhobeka@gmail.com")){
-			   roleDTO.setRoleAuthority("ROLE_ADMIN");
-		   }else {	   
-			   roleDTO.setRoleAuthority("ROLE_USER");
-			}
-		   collectionRoleDTO.add(roleDTO);
-		   userRegistrationDTO.setRoles(collectionRoleDTO);
-
-			if (isPasswordValid(userRegistrationDTO.getPassword())){
-				jmsTemplate.convertAndSend(JmsConfig.userRegQName,userRegistrationDTO);
-				return userRegistrationDTO;
-			}else{
-				throw new InvalidPasswordException ("Password must contain atleast 1 uppercase, atleast 1 special character and atleast 1 digit");
-			}
-
+		        log.info("sending message='{}' to destination='{}'",userRegistrationDTO,JmsConfig.userRegQName);
+			    setRoleAuthorities(userRegistrationDTO.getUsername ());
+			    userRegistrationDTO.setRoles(collectionRoleDTO);
+				if (isPasswordValid(userRegistrationDTO.getPassword())){
+					jmsTemplate.convertAndSend(JmsConfig.userRegQName,userRegistrationDTO);
+					return userRegistrationDTO;
+				}else{
+					throw new InvalidPasswordException ("Password must contain atleast 1 uppercase, atleast 1 special character and atleast 1 digit");
+				}
 	}
 
+	/*set Authority based on username provided*/
+	public RolesDTO setRoleAuthorities(String username){
+
+		if(username.equalsIgnoreCase("mkhuselityhobeka@gmail.com")){
+			roleDTO.setRoleAuthority("ROLE_ADMIN");
+		}else{
+			roleDTO.setRoleAuthority("ROLE_USER");
+		}
+		collectionRoleDTO.add(roleDTO);
+		return roleDTO;
+	}
+
+	/*check if provided password matches the provided regex rules*/
 	public boolean isPasswordValid(String password){
+		this.password = password;
 		String passwordRegexRules = "^(?=.*[0-8])(?=.*[a-z])(?=.*[!@#&()-[{}]:;',?/*~$^+=<>]).{8,20}$";
 		Pattern pattern = Pattern.compile (passwordRegexRules);
-		Matcher macher  = pattern.matcher (password);
-		return macher.matches();
+		Matcher matcher  = pattern.matcher(password);
+		return matcher.matches();
 	}
-	/*get pending jobs from user_regitration*/
+	/*get pending jobs from user_registration*/
 	public int numberOfPendingJobs(String registrationQueue){
-		return jmsTemplate.browse (registrationQueue,((session, browser) ->
-				                    Collections.list (browser.getEnumeration ()).size ()));
+		return jmsTemplate.browse(registrationQueue,((session, browser) ->
+				                    Collections.list (browser.getEnumeration()).size ()));
 	}
 
-    /*get pending jobs from user_regitration*/
+    /*get pending jobs from user_registration*/
 	public int numberOfProcessedMessages(){
 		return counter;
 	}
@@ -96,7 +98,6 @@ public class UserRegistrationServiceImpl implements UserRegistrationInterface, M
 	/*check activeMQ connection status*/
 	public boolean isUp(){
 		ConnectionFactory connectionFactory = jmsTemplate.getConnectionFactory();
-
         try{
 			connectionFactory.createConnection();
 			log.debug(connectionFactory.toString ());
@@ -126,7 +127,6 @@ public class UserRegistrationServiceImpl implements UserRegistrationInterface, M
 			log.error ("The message is not a text message");
 		}
 	}
-
 
 	/*call user login db service api */
 	@Override
