@@ -36,7 +36,7 @@ public class LearnerService implements LearnerInterface{
 				}
 		
 			if(learnerDTO.getApplicationStatus().getCurrentGrade() > learnerDTO.getApplicationStatus().getGradeApplyingFor()) {
-				throw new InvalidGradeException();
+				throw new InvalidGradeException("You have already pass grade " + learnerDTO.getApplicationStatus().getGradeApplyingFor());
 			}else {
 				jmsTemplate.convertAndSend("Learner_Application",learnerDTO);
 		    	log.info("Learner application data has been saved");

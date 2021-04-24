@@ -27,6 +27,7 @@ class UserRegistrationControllerTest{
 
     @Autowired
     TestRestTemplate testRestTemplate;
+
     @BeforeEach
     public void setup(){
         userRegistrationDTO.setSname ("Mkhuseli");
@@ -48,6 +49,5 @@ class UserRegistrationControllerTest{
                 .content (requestMessage)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andReturn();
-
     }
 }

@@ -32,23 +32,11 @@ class UserRegistrationServiceImplTest {
         Assertions.assertEquals (userRegistrationDTO,registrationDTO);
     }
 
-    @Test
-    void isUp() {
-        boolean isJmsUp = userRegistrationService.isUp();
-        Assertions.assertEquals(true,isJmsUp);
-    }
 
     @Test
     void isPasswordValid() {
         boolean isPasswordValid = userRegistrationService.isPasswordValid (userRegistrationDTO.getPassword());
         Assertions.assertTrue (isPasswordValid);
-    }
-
-    @Test
-    void numberOfPendingJobs() {
-            int pendingJobs = 3;
-            int counter = userRegistrationService.numberOfPendingJobs (JmsConfig.userRegQName);
-            Assertions.assertEquals (pendingJobs,counter);
     }
 
 

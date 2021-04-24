@@ -39,25 +39,5 @@ public class UserRegistrationController {
 		return new ResponseEntity<>(userRegistrationServiceImpl.getAllUsers(), HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/health")
-	public ResponseEntity<HttpStatus> health(){
-		HttpStatus httpStatus;
-		if (userRegistrationServiceImpl.isUp ()){
-			httpStatus = HttpStatus.OK;
-		}else{
-			httpStatus = HttpStatus.BAD_REQUEST;
-		}
-		return new ResponseEntity<>(httpStatus);
-	}
-
-	@ResponseBody
-	@RequestMapping(value = "/metrics",  produces="text/plain")
-	public String matrics(){
-		int numberOfMessagesInUserReqQueue = userRegistrationServiceImpl.numberOfPendingJobs(JmsConfig.userRegQName);
-
-		return  "# HELP messages Number of messages in the queueService\n"
-				+ "# TYPE messages gauge\n"
-				+ "messages " + numberOfMessagesInUserReqQueue;
-	}
 
 }

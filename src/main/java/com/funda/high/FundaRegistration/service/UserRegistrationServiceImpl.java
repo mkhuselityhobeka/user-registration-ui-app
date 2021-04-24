@@ -40,7 +40,7 @@ public class UserRegistrationServiceImpl implements UserRegistrationInterface, M
 
 	JmsTemplate jmsTemplate;
 	RestTemplate restTemplate;
-	int counter = 0;
+
 	private String password;
 
 	public UserRegistrationServiceImpl (JmsTemplate jmsTemplate, RestTemplate restTemplate){
@@ -54,7 +54,7 @@ public class UserRegistrationServiceImpl implements UserRegistrationInterface, M
 	public synchronized UserRegistrationDTO enqueUserDetails(UserRegistrationDTO userRegistrationDTO) throws InvalidPasswordException {
 
 		        log.info("sending message='{}' to destination='{}'",userRegistrationDTO,JmsConfig.userRegQName);
-			    setRoleAuthorities(userRegistrationDTO.getUsername ());
+			    setRoleAuthorities(userRegistrationDTO.getUsername());
 			    userRegistrationDTO.setRoles(collectionRoleDTO);
 				if (isPasswordValid(userRegistrationDTO.getPassword())){
 					jmsTemplate.convertAndSend(JmsConfig.userRegQName,userRegistrationDTO);
@@ -84,29 +84,7 @@ public class UserRegistrationServiceImpl implements UserRegistrationInterface, M
 		Matcher matcher  = pattern.matcher(password);
 		return matcher.matches();
 	}
-	/*get pending jobs from user_registration*/
-	public int numberOfPendingJobs(String registrationQueue){
-		return jmsTemplate.browse(registrationQueue,((session, browser) ->
-				                    Collections.list (browser.getEnumeration()).size ()));
-	}
 
-    /*get pending jobs from user_registration*/
-	public int numberOfProcessedMessages(){
-		return counter;
-	}
-
-	/*check activeMQ connection status*/
-	public boolean isUp(){
-		ConnectionFactory connectionFactory = jmsTemplate.getConnectionFactory();
-        try{
-			connectionFactory.createConnection();
-			log.debug(connectionFactory.toString ());
-			return  true;
-		}catch (Exception exception){
-        	exception.printStackTrace ();
-		}
-		return  false;
-	}
 
 	/*check the message sent*/
 	@Override
