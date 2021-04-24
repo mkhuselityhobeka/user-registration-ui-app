@@ -8,8 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-
-
 @SpringBootTest
 class UserRegistrationServiceImplTest {
 
@@ -23,21 +21,21 @@ class UserRegistrationServiceImplTest {
     void setUp(){
 
         userRegistrationDTO.setSname ("Mkhuseli");
-        userRegistrationDTO.setPassword ("Mkhuseli@tyhobeka88");
-        userRegistrationDTO.setSlastName ("Tyhobeka");
-        userRegistrationDTO.setUsername ("mkhuselityhobeka@gmail.com");
+        userRegistrationDTO.setPassword("Mkhuseli@tyhobeka88");
+        userRegistrationDTO.setSlastName("Tyhobeka");
+        userRegistrationDTO.setUsername("mkhuselityhobeka@gmail.com");
     }
+
     @Test
     void enqueUserDetails() {
         UserRegistrationDTO registrationDTO = userRegistrationService.enqueUserDetails(userRegistrationDTO);
         Assertions.assertEquals (userRegistrationDTO,registrationDTO);
-
     }
 
     @Test
     void isUp() {
         boolean isJmsUp = userRegistrationService.isUp();
-        Assertions.assertEquals (true,isJmsUp);
+        Assertions.assertEquals(true,isJmsUp);
     }
 
     @Test
