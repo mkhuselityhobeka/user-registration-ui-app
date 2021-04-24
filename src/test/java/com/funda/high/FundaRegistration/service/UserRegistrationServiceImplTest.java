@@ -26,10 +26,9 @@ class UserRegistrationServiceImplTest {
     void enqueUserDetails() {
 
         userRegistrationDTO.setSname ("Mkhuseli");
-        userRegistrationDTO.setPassword ("mk");
+        userRegistrationDTO.setPassword ("Mkhuseli@tyhobeka88");
         userRegistrationDTO.setSlastName ("Tyhobeka");
         userRegistrationDTO.setUsername ("mkhuselityhobeka@gmail.com");
-
         UserRegistrationDTO registrationDTO = userRegistrationService.enqueUserDetails(userRegistrationDTO);
         Assertions.assertEquals (userRegistrationDTO,registrationDTO);
 

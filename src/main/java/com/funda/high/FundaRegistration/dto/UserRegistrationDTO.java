@@ -25,7 +25,7 @@ public class UserRegistrationDTO {
 	private String sname;
 	@NotBlank(message = "password cannot be empty")
 	@NotNull
-	@ValidPassword
+	//@ValidPassword
 	private String password;
 	@NotBlank(message = "slastName cannot be emty")
 	@NotNull

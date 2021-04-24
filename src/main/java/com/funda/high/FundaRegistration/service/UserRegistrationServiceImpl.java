@@ -6,7 +6,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.funda.high.FundaRegistration.config.JmsConfig;
+import com.funda.high.FundaRegistration.exceptions.InvalidPasswordException;
 import org.apache.activemq.command.ActiveMQTextMessage;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.JmsException;
@@ -49,9 +53,12 @@ public class UserRegistrationServiceImpl implements UserRegistrationInterface, M
 	/*save user registration data to activemq*/
 	/*make method synchronized so it can be accessed by one thread at time*/
 	@Override
-	public synchronized UserRegistrationDTO enqueUserDetails(UserRegistrationDTO userRegistrationDTO){
+	public synchronized UserRegistrationDTO enqueUserDetails(UserRegistrationDTO userRegistrationDTO) throws InvalidPasswordException {
+
 
 		   log.debug("sending message='{}' to destination='{}'",userRegistrationDTO,JmsConfig.userRegQName);
+
+
 		   if(userRegistrationDTO.getUsername().equalsIgnoreCase("mkhuselityhobeka@gmail.com")){
 			   roleDTO.setRoleAuthority("ROLE_ADMIN");
 		   }else {	   
@@ -59,10 +66,22 @@ public class UserRegistrationServiceImpl implements UserRegistrationInterface, M
 			}
 		   collectionRoleDTO.add(roleDTO);
 		   userRegistrationDTO.setRoles(collectionRoleDTO);
-  		   jmsTemplate.convertAndSend(JmsConfig.userRegQName,userRegistrationDTO);
-		   return userRegistrationDTO;
+
+			if (isPasswordValid(userRegistrationDTO.getPassword())){
+				jmsTemplate.convertAndSend(JmsConfig.userRegQName,userRegistrationDTO);
+				return userRegistrationDTO;
+			}else{
+				throw new InvalidPasswordException ("Password must contain atleast 1 uppercase, atleast 1 special character and atleast 1 digit");
+			}
+
 	}
 
+	public boolean isPasswordValid(String password){
+		String passwordRegexRules = "^(?=.*[0-8])(?=.*[a-z])(?=.*[!@#&()-[{}]:;',?/*~$^+=<>]).{8,20}$";
+		Pattern pattern = Pattern.compile (passwordRegexRules);
+		Matcher macher  = pattern.matcher (password);
+		return macher.matches();
+	}
 	/*get pending jobs from user_regitration*/
 	public int numberOfPendingJobs(String registrationQueue){
 		return jmsTemplate.browse (registrationQueue,((session, browser) ->
