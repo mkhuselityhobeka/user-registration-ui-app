@@ -41,7 +41,7 @@ public class UserRegistrationController {
 	@RequestMapping(value = "/health")
 	public ResponseEntity<HttpStatus> health(){
 		HttpStatus httpStatus;
-		if (userRegistrationServiceImpl.isup ()){
+		if (userRegistrationServiceImpl.isUp ()){
 			httpStatus = HttpStatus.OK;
 		}else{
 			httpStatus = HttpStatus.BAD_REQUEST;

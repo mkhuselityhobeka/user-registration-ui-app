@@ -1,32 +1,44 @@
 package com.funda.high.FundaRegistration.service;
 
 import com.funda.high.FundaRegistration.dto.UserRegistrationDTO;
+import org.apache.activemq.broker.Connection;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.jms.core.JmsTemplate;
 
 
 @SpringBootTest
 class UserRegistrationServiceImplTest {
 
-    @MockBean
+    @Autowired
     UserRegistrationServiceImpl userRegistrationService;
-    @MockBean
+
+    @Autowired
     UserRegistrationDTO userRegistrationDTO;
+
 
     @Test
     void enqueUserDetails() {
 
-        userRegistrationDTO.setSname ("");
-        userRegistrationDTO.setSlastName ("");
-        
+        userRegistrationDTO.setSname ("Mkhuseli");
+        userRegistrationDTO.setPassword ("mk");
+        userRegistrationDTO.setSlastName ("Tyhobeka");
         userRegistrationDTO.setUsername ("mkhuselityhobeka@gmail.com");
-        userRegistrationDTO.setPassword ("mkhuselityhobeka@gmail.com");
+
+        UserRegistrationDTO registrationDTO = userRegistrationService.enqueUserDetails(userRegistrationDTO);
+        Assertions.assertEquals (userRegistrationDTO,registrationDTO);
 
 
     }
 
     @Test
-    void isup() {
+    void isUp() {
+        boolean isJmsUp = userRegistrationService.isUp();
+        Assertions.assertEquals (true,isJmsUp);
     }
 }

@@ -7,7 +7,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import com.funda.high.FundaRegistration.config.JmsConfig;
-import lombok.extern.slf4j.XSlf4j;
 import org.apache.activemq.command.ActiveMQTextMessage;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.JmsException;
@@ -76,10 +75,12 @@ public class UserRegistrationServiceImpl implements UserRegistrationInterface, M
 	}
 
 	/*check activeMQ connection status*/
-	public boolean isup(){
-		ConnectionFactory connectionFactory = jmsTemplate.getConnectionFactory ();
+	public boolean isUp(){
+		ConnectionFactory connectionFactory = jmsTemplate.getConnectionFactory();
+
         try{
 			connectionFactory.createConnection();
+			log.debug(connectionFactory.toString ());
 			return  true;
 		}catch (Exception exception){
         	exception.printStackTrace ();

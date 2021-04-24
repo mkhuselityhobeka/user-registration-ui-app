@@ -20,7 +20,7 @@
 		<spring-cloud.version>Hoxton.RELEASE</spring-cloud.version>
 		<spring-boot-admin-client.vesrion>2.2.2</spring-boot-admin-client.vesrion>
 		<org.passay.version>1.0</org.passay.version>
-		<springdoc.springdoc-openapi-ui.version>1.5.2</springdoc.springdoc-openapi-ui.version>
+		<springdoc.springdoc-openapi.version>1.5.2</springdoc.springdoc-openapi.version>
 	</properties>
 
 	<dependencyManagement>
@@ -116,7 +116,13 @@
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-ui</artifactId>
-			<version>${springdoc.springdoc-openapi-ui.version}</version>
+			<version>${springdoc.springdoc-openapi.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-data-rest</artifactId>
+			<version>${springdoc.springdoc-openapi.version}</version>
 		</dependency>
 
 		<!--spring boot client registration to admin server-->
